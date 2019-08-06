@@ -1,6 +1,7 @@
 package br.com.codenation;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Time {
     Long id;
@@ -56,5 +57,35 @@ public class Time {
 
     public void setJogador(Jogador jogador) {
         this.jogador = jogador;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Time time = (Time) o;
+        return Objects.equals(id, time.id) &&
+                Objects.equals(nome, time.nome) &&
+                Objects.equals(dataCriacao, time.dataCriacao) &&
+                Objects.equals(corUniformePrincipal, time.corUniformePrincipal) &&
+                Objects.equals(corUniformeSecundario, time.corUniformeSecundario) &&
+                Objects.equals(jogador, time.jogador);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario, jogador);
+    }
+
+    @Override
+    public String toString() {
+        return "Time{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", corUniformePrincipal='" + corUniformePrincipal + '\'' +
+                ", corUniformeSecundario='" + corUniformeSecundario + '\'' +
+                ", jogador=" + jogador +
+                '}';
     }
 }

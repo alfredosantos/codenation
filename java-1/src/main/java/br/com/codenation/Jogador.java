@@ -2,6 +2,7 @@ package br.com.codenation;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Jogador {
     Long id;
@@ -57,5 +58,35 @@ public class Jogador {
 
     public void setSalario(BigDecimal salario) {
         this.salario = salario;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Jogador jogador = (Jogador) o;
+        return Objects.equals(id, jogador.id) &&
+                Objects.equals(idTime, jogador.idTime) &&
+                Objects.equals(nome, jogador.nome) &&
+                Objects.equals(dataNascimento, jogador.dataNascimento) &&
+                Objects.equals(nivelHabilidade, jogador.nivelHabilidade) &&
+                Objects.equals(salario, jogador.salario);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
+    }
+
+    @Override
+    public String toString() {
+        return "Jogador{" +
+                "id=" + id +
+                ", idTime=" + idTime +
+                ", nome='" + nome + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", nivelHabilidade=" + nivelHabilidade +
+                ", salario=" + salario +
+                '}';
     }
 }
