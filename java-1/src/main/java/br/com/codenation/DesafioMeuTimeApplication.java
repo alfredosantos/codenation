@@ -123,40 +123,51 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
     @Desafio("buscarMelhorJogadorDoTime")
     public Long buscarMelhorJogadorDoTime(Long idTime) {
+        List<Jogador> salario = (List<Jogador>) listJogador;
+
+        public Jogador busca(Comparator<Jogador> comparador) {
+            if (alunos.isEmpty()) {
+                return null;
+            }
+            Collections.sort(alunos, comparador);
+            return alunos.get(0);
+        }
+
         if (listTime.containsKey(idTime)) {
             throw new TimeNaoEncontradoException();
             else{
-                for (listTime.get(idTime).getJogador()) == listTime.get(idTime).getJogador().getSalario();
+                Collections.sort(
             }
         }
-
-        @Desafio("buscarJogadorMaisVelho")
-        public Long buscarJogadorMaisVelho (Long idTime){
-            throw new UnsupportedOperationException();
-        }
-
-        @Desafio("buscarTimes")
-        public List<Long> buscarTimes () {
-            throw new UnsupportedOperationException();
-        }
-
-        @Desafio("buscarJogadorMaiorSalario")
-        public Long buscarJogadorMaiorSalario (Long idTime){
-            throw new UnsupportedOperationException();
-        }
-
-        @Desafio("buscarSalarioDoJogador")
-        public BigDecimal buscarSalarioDoJogador (Long idJogador){
-            throw new UnsupportedOperationException();
-        }
-
-        @Desafio("buscarTopJogadores")
-        public List<Long> buscarTopJogadores (Integer top){
-            throw new UnsupportedOperationException();
-        }
-
-        @Desafio("buscarCorCamisaTimeDeFora")
-        public String buscarCorCamisaTimeDeFora (Long timeDaCasa, Long timeDeFora){
-            throw new UnsupportedOperationException();
-        }
     }
+
+    @Desafio("buscarJogadorMaisVelho")
+    public Long buscarJogadorMaisVelho(Long idTime) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Desafio("buscarTimes")
+    public List<Long> buscarTimes() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Desafio("buscarJogadorMaiorSalario")
+    public Long buscarJogadorMaiorSalario(Long idTime) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Desafio("buscarSalarioDoJogador")
+    public BigDecimal buscarSalarioDoJogador(Long idJogador) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Desafio("buscarTopJogadores")
+    public List<Long> buscarTopJogadores(Integer top) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Desafio("buscarCorCamisaTimeDeFora")
+    public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
+        throw new UnsupportedOperationException();
+    }
+}
