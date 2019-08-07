@@ -1,91 +1,103 @@
 package br.com.codenation;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Time {
-    Long id;
-    String nome;
-    LocalDate dataCriacao;
-    String corUniformePrincipal;
-    String corUniformeSecundario;
-    Jogador jogador;
 
-    public Long getId() {
-        return id;
-    }
+  Long id;
+  String nome;
+  LocalDate dataCriacao;
+  String corUniformePrincipal;
+  String corUniformeSecundario;
+  List<Jogador> jogadores;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Time() {
+    jogadores = new LinkedList<>();
+  }
 
-    public String getNome() {
-        return nome;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
+  public String getNome() {
+    return nome;
+  }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
 
-    public String getCorUniformePrincipal() {
-        return corUniformePrincipal;
-    }
+  public LocalDate getDataCriacao() {
+    return dataCriacao;
+  }
 
-    public void setCorUniformePrincipal(String corUniformePrincipal) {
-        this.corUniformePrincipal = corUniformePrincipal;
-    }
+  public void setDataCriacao(LocalDate dataCriacao) {
+    this.dataCriacao = dataCriacao;
+  }
 
-    public String getCorUniformeSecundario() {
-        return corUniformeSecundario;
-    }
+  public String getCorUniformePrincipal() {
+    return corUniformePrincipal;
+  }
 
-    public void setCorUniformeSecundario(String corUniformeSecundario) {
-        this.corUniformeSecundario = corUniformeSecundario;
-    }
+  public void setCorUniformePrincipal(String corUniformePrincipal) {
+    this.corUniformePrincipal = corUniformePrincipal;
+  }
 
-    public Jogador getJogador() {
-        return jogador;
-    }
+  public String getCorUniformeSecundario() {
+    return corUniformeSecundario;
+  }
 
-    public void setJogador(Jogador jogador) {
-        this.jogador = jogador;
-    }
+  public void setCorUniformeSecundario(String corUniformeSecundario) {
+    this.corUniformeSecundario = corUniformeSecundario;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Time time = (Time) o;
-        return Objects.equals(id, time.id) &&
-                Objects.equals(nome, time.nome) &&
-                Objects.equals(dataCriacao, time.dataCriacao) &&
-                Objects.equals(corUniformePrincipal, time.corUniformePrincipal) &&
-                Objects.equals(corUniformeSecundario, time.corUniformeSecundario) &&
-                Objects.equals(jogador, time.jogador);
-    }
+  public List<Jogador> getJogadores() {
+    return jogadores;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario, jogador);
-    }
+  public void setJogadores(List<Jogador> jogadores) {
+    this.jogadores = jogadores;
+  }
 
-    @Override
-    public String toString() {
-        return "Time{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", corUniformePrincipal='" + corUniformePrincipal + '\'' +
-                ", corUniformeSecundario='" + corUniformeSecundario + '\'' +
-                ", jogador=" + jogador +
-                '}';
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Time time = (Time) o;
+    return Objects.equals(id, time.id) &&
+        Objects.equals(nome, time.nome) &&
+        Objects.equals(dataCriacao, time.dataCriacao) &&
+        Objects.equals(corUniformePrincipal, time.corUniformePrincipal) &&
+        Objects.equals(corUniformeSecundario, time.corUniformeSecundario) &&
+        Objects.equals(jogadores, time.jogadores);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects
+        .hash(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario, jogadores);
+  }
+
+  @Override
+  public String toString() {
+    return "Time{" +
+        "id=" + id +
+        ", nome='" + nome + '\'' +
+        ", dataCriacao=" + dataCriacao +
+        ", corUniformePrincipal='" + corUniformePrincipal + '\'' +
+        ", corUniformeSecundario='" + corUniformeSecundario + '\'' +
+        ", jogadores=" + jogadores +
+        '}';
+  }
 }
