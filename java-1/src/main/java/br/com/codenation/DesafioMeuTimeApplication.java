@@ -6,224 +6,265 @@ import br.com.codenation.desafio.exceptions.CapitaoNaoInformadoException;
 import br.com.codenation.desafio.exceptions.IdentificadorUtilizadoException;
 import br.com.codenation.desafio.exceptions.JogadorNaoEncontradoException;
 import br.com.codenation.desafio.exceptions.TimeNaoEncontradoException;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
-    final Map<Long, Time> listTime = new HashMap<>();
-    final Map<Long, Jogador> listJogador = new HashMap<>();
+  final Map<Long, Time> listTime = new HashMap<>();
+  final Map<Long, Jogador> listJogadores = new HashMap<>();
 
-    @Desafio("incluirTime")
-    public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,
-                            String corUniformeSecundario) {
-        List<Long> idTimes = buscarTimes();
-        Time time = new Time();
-        if (id == null) {
-            throw new NoSuchElementException("No value present");
-        } else {
-            time.setId(id);
-        }
-        time.setNome(nome);
-        time.setDataCriacao(dataCriacao);
-        time.setCorUniformeSecundario(corUniformePrincipal);
-        time.setCorUniformePrincipal(corUniformeSecundario);
+  @Desafio("incluirTime")
+  public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,
+      String corUniformeSecundario) {
+    List<Long> listIdTimes = buscarTimes();
+    Time time = new Time();
 
-        if (idTimes.contains(id)) {
-            throw new IdentificadorUtilizadoException();
-        } else {
-            listTime.put(id, time);
-        }
+    if (id == null) {
+      throw new NoSuchElementException("No value present");
+    } else {
+      if (listIdTimes.contains(id)) {
+        throw new IdentificadorUtilizadoException();
+      }
     }
 
-    @Desafio("incluirJogador")
-    public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento,
-                               Integer nivelHabilidade, BigDecimal salario) {
-        Jogador jogador = new Jogador();
-        jogador.setId(id);
+    time.setId(id);
+    time.setNome(nome);
+    time.setDataCriacao(dataCriacao);
+    time.setCorUniformeSecundario(corUniformePrincipal);
+    time.setCorUniformePrincipal(corUniformeSecundario);
 
-        if (listTime.containsKey(idTime)) {
-            throw new TimeNaoEncontradoException();
-        } else {
-            listJogador.put(id, jogador);
-        }
+    listTime.put(id, time);
+  }
 
-        jogador.setNome(nome);
-        jogador.setDataNascimento(dataNascimento);
-        jogador.setNivelHabilidade(nivelHabilidade);
-        jogador.setSalario(salario);
+  @Desafio("incluirJogador")
+  public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento,
+      Integer nivelHabilidade, BigDecimal salario) {
+    Jogador jogador = new Jogador();
 
-        if (listJogador.containsKey(id)) {
-            throw new JogadorNaoEncontradoException();
-        } else {
-            listJogador.put(id, jogador);
-        }
-
+    if (listJogadores.containsKey(id)) {
+      throw new IdentificadorUtilizadoException();
     }
 
-    @Desafio("definirCapitao")
-    public void definirCapitao(Long idJogador) {
-        Jogador capitao = new Jogador();
+    listTime
+        .values()
+        .stream()
+        .filter(t -> t.getId()
+            .equals(idTime))
+        .findAny().orElseThrow(TimeNaoEncontradoException::new);
 
-        if (listCapitaes.containsKey(idJogador)) {
-            throw new CapitaoNaoInformadoException();
-        } else {
-            capitao.setJogador(listJogador.get(idJogador));
-            capitao.setCapitao(Boolean.TRUE);
-            listCapitaes.put(idJogador, listTime.get(capitao.getJogador().getIdTime()));
-        }
+    jogador.setId(id);
+    jogador.setId(idTime);
+    jogador.setNome(nome);
+    jogador.setDataNascimento(dataNascimento);
+    jogador.setNivelHabilidade(nivelHabilidade);
+    jogador.setSalario(salario);
+    listJogadores.put(id, jogador);
+  }
+
+  @Desafio("definirCapitao")
+  public void definirCapitao(Long idJogador) {
+    Jogador jogador = listJogadores
+        .values()
+        .stream()
+        .filter(j -> j.getId()
+            .equals(idJogador))
+        .findAny().orElseThrow(JogadorNaoEncontradoException::new);
+
+    Time time;
+    time = listTime
+        .values()
+        .stream()
+        .filter(t -> t.getId()
+            .equals(jogador.getIdTime()))
+        .findAny().orElse(null);
+    assert time != null;
+    time.setCapitao(jogador.getId());
+  }
+
+  @Desafio("buscarCapitaoDoTime")
+  public Long buscarCapitaoDoTime(Long idTime) {
+    Time time =
+        listTime
+            .values()
+            .stream()
+            .filter(t -> t.getId()
+                .equals(idTime))
+            .findAny().orElseThrow(TimeNaoEncontradoException::new);
+
+    if (time.getCapitao() == null) {
+      throw new CapitaoNaoInformadoException();
     }
 
-    @Desafio("buscarCapitaoDoTime")
-    public Long buscarCapitaoDoTime(Long idTime) {
-        Time capitaoAntigo;
-        if (listCapitaes.containsKey(idTime)) {
-            capitaoAntigo = listCapitaes.get(listJogador.get(idTime));
-            listCapitaes.remove(capitaoAntigo);
-        }
+    return time.getCapitao();
+  }
 
-        if (listTime.containsKey(idTime)) {
-            listCapitaes.get(idTime);
-        } else {
-            capitao.setJogador(listJogador.get(listTime.get(idTime)));
-            capitao.setCapitao(Boolean.TRUE);
-            listCapitaes.put(idTime, listTime.get(capitao.getJogador().getIdTime()));
-        }
-        return listCapitaes.get(idTime).getId();
+  @Desafio("buscarNomeJogador")
+  public String buscarNomeJogador(Long idJogador) {
+    Jogador jogador;
+    if (listJogadores.containsKey(idJogador)) {
+      throw new JogadorNaoEncontradoException();
+    } else {
+      jogador = listJogadores.get(idJogador);
+      return jogador.getNome();
     }
+  }
 
-    @Desafio("buscarNomeJogador")
-    public String buscarNomeJogador(Long idJogador) {
-        if (listJogador.containsKey(idJogador)) {
-            throw new JogadorNaoEncontradoException();
-        } else {
-            jogador = listJogador.get(idJogador);
-            return jogador.getNome();
-        }
+  @Desafio("buscarNomeTime")
+  public String buscarNomeTime(Long idTime) {
+    listTime
+        .values()
+        .stream()
+        .filter(t -> t.getId()
+            .equals(idTime))
+        .findAny().orElseThrow(TimeNaoEncontradoException::new);
+    return listTime.get(idTime).getNome();
+  }
+
+  @Desafio("buscarJogadoresDoTime")
+  public List<Long> buscarJogadoresDoTime(Long idTime) {
+    listTime
+        .values()
+        .stream()
+        .filter(t -> t.getId()
+            .equals(idTime))
+        .findAny().orElseThrow(TimeNaoEncontradoException::new);
+    return Collections.singletonList(listJogadores.get(idTime).getId());
+  }
+
+  @Desafio("buscarMelhorJogadorDoTime")
+  public Long buscarMelhorJogadorDoTime(Long idTime) {
+    listTime
+        .values()
+        .stream()
+        .filter(t -> t.getId()
+            .equals(idTime))
+        .findAny().orElseThrow(TimeNaoEncontradoException::new);
+
+    List<Jogador> jogadorList = listJogadores
+        .values()
+        .stream()
+        .filter(j -> j.getIdTime()
+            .equals(idTime))
+        .collect(Collectors.toList());
+
+    jogadorList.sort(Comparator.comparing(Jogador::getNivelHabilidade)
+        .reversed().thenComparing(Jogador::getId));
+
+    return jogadorList.get(0).getId();
+  }
+
+  @Desafio("buscarJogadorMaisVelho")
+  public Long buscarJogadorMaisVelho(Long idTime) {
+    listTime
+        .values()
+        .stream()
+        .filter(t -> t.getId()
+            .equals(idTime))
+        .findAny().orElseThrow(TimeNaoEncontradoException::new);
+
+    final List<Jogador> jogadores = listJogadores
+        .values()
+        .stream()
+        .filter(j -> j.getIdTime()
+            .equals(idTime))
+        .collect(Collectors.toList());
+
+    Comparator<? super Jogador> comparator =
+        (Comparator<Jogador>) (jogador, t1)
+            -> t1.getDataNascimento().compareTo(jogador.getDataNascimento());
+    Collections.sort(jogadores, comparator.reversed());
+    return jogadores.get(0).getId();
+  }
+
+  @Desafio("buscarTimes")
+  public List<Long> buscarTimes() {
+    return listTime
+        .values()
+        .stream()
+        .map(Time::getId)
+        .sorted()
+        .collect(Collectors.toList());
+  }
+
+  @Desafio("buscarJogadorMaiorSalario")
+  public Long buscarJogadorMaiorSalario(Long idTime) {
+    listTime
+        .values()
+        .stream()
+        .filter(t -> t.getId()
+            .equals(idTime))
+        .findAny().orElseThrow(TimeNaoEncontradoException::new);
+
+    final List<Jogador> jogadores = listJogadores
+        .values()
+        .stream()
+        .filter(j -> j.getIdTime()
+            .equals(idTime))
+        .collect(Collectors.toList());
+
+    Comparator<? super Jogador> comparator = new Comparator<Jogador>() {
+      @Override
+      public int compare(Jogador jogador, Jogador t1) {
+        return t1.getSalario().compareTo(jogador.getSalario());
+      }
+    };
+    Collections.sort(jogadores, comparator.reversed());
+    return jogadores.get(0).getId();
+  }
+
+  @Desafio("buscarSalarioDoJogador")
+  public BigDecimal buscarSalarioDoJogador(Long idJogador) {
+    if (listJogadores.containsKey(idJogador)) {
+      throw new JogadorNaoEncontradoException();
     }
+    return listJogadores.get(idJogador).getSalario();
+  }
 
-    @Desafio("buscarNomeTime")
-    public String buscarNomeTime(Long idTime) {
-        if (listTime.containsKey(idTime)) {
-            throw new IdentificadorUtilizadoException();
-        } else {
+  @Desafio("buscarTopJogadores")
+  public List<Long> buscarTopJogadores(Integer top) {
+    Comparator<Jogador> jogadorComparator =
+        Comparator.comparingLong(Jogador::getNivelHabilidade).reversed()
+        .thenComparingLong(Jogador::getId);
 
-            return listTime.get(get)
-        }
-    }
+    return listJogadores
+        .values()
+        .stream()
+        .sorted(jogadorComparator)
+        .map(Jogador::getId)
+        .limit(top)
+        .collect(Collectors.toList());
+  }
 
-    @Desafio("buscarJogadoresDoTime")
-    public List<Long> buscarJogadoresDoTime(Long idTime) {
-        if (listTime.containsKey(idTime)) {
-            throw new TimeNaoEncontradoException();
-        }
-        return Collections.singletonList(listJogador.get(idTime).getId());
-    }
+  @Desafio("buscarCorCamisaTimeDeFora")
+  public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
+    Time timeCasa =
+        listTime
+            .values()
+            .stream()
+            .filter(t -> t.getId()
+                .equals(timeDaCasa))
+            .findAny().orElseThrow(TimeNaoEncontradoException::new);
 
-    @Desafio("buscarMelhorJogadorDoTime")
-    public Long buscarMelhorJogadorDoTime(Long idTime) {
-        if (listTime.containsKey(idTime)) {
-            throw new TimeNaoEncontradoException();
-        }
-        Comparator<? super Jogador> comparator = new Comparator<Jogador>() {
-            @Override
-            public int compare(Jogador jogador, Jogador t1) {
-                return t1.getNivelHabilidade().compareTo(jogador.getNivelHabilidade());
-            }
-        };
-        Collections.sort(listTime.get(idTime).getJogadores(), comparator);
-        return listTime.get(idTime).getJogadores().get(0).id;
-    }
+    Time timefora =
+        listTime
+            .values()
+            .stream()
+            .filter(t -> t.getId()
+                .equals(timeDeFora))
+            .findAny().orElseThrow(TimeNaoEncontradoException::new);
 
-    @Desafio("buscarJogadorMaisVelho")
-    public Long buscarJogadorMaisVelho(Long idTime) {
-        if (listTime.containsKey(idTime)) {
-            throw new TimeNaoEncontradoException();
-        }
-        Comparator<? super Jogador> comparator = new Comparator<Jogador>() {
-            @Override
-            public int compare(Jogador jogador, Jogador t1) {
-                return t1.getDataNascimento().compareTo(jogador.getDataNascimento());
-            }
-        };
-        Collections.sort(listTime.get(idTime).getJogadores(), comparator);
-        return listTime.get(idTime).getJogadores().get(0).id;
-    }
-
-    @Desafio("buscarTimes")
-    public List<Long> buscarTimes() {
-        return listTime.values().stream()
-                .map(Time::getId)
-                .sorted()
-                .collect(Collectors.toList());
-    }
-
-    @Desafio("buscarJogadorMaiorSalario")
-    public Long buscarJogadorMaiorSalario(Long idTime) {
-        if (listTime.containsKey(idTime)) {
-            throw new TimeNaoEncontradoException();
-        }
-        Comparator<? super Jogador> comparator = new Comparator<Jogador>() {
-            @Override
-            public int compare(Jogador jogador, Jogador t1) {
-                return t1.getSalario().compareTo(jogador.getSalario());
-            }
-        };
-        Collections.sort(listTime.get(idTime).getJogadores(), comparator);
-        return listTime.get(idTime).getJogadores().get(0).id;
-    }
-
-    @Desafio("buscarSalarioDoJogador")
-    public BigDecimal buscarSalarioDoJogador(Long idJogador) {
-        if (listJogador.containsKey(idJogador)) {
-            throw new JogadorNaoEncontradoException();
-        }
-        return listJogador.get(idJogador).getSalario();
-    }
-
-    @Desafio("buscarTopJogadores")
-    public List<Long> buscarTopJogadores(Integer top) {
-        if (listJogador.containsKey(top)) {
-            throw new JogadorNaoEncontradoException();
-        }
-        Comparator<? super Jogador> comparator = new Comparator<Jogador>() {
-            @Override
-            public int compare(Jogador jogador, Jogador t1) {
-                return jogador.getNivelHabilidade().compareTo(t1.getNivelHabilidade());
-            }
-        };
-        Collections.sort(listTime.get(top).getJogadores(), comparator);
-        return Collections.singletonList(listTime.get(top).getJogadores().get(0).id);
-    }
-
-    @Desafio("buscarCorCamisaTimeDeFora")
-    public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
-        Time timeCasa =
-                listTime
-                        .values()
-                        .stream()
-                        .filter(t ->
-                                t.getId().equals(timeDaCasa)).findAny().orElse(null);
-        if (timeCasa == null) {
-            throw new TimeNaoEncontradoException();
-        }
-
-        Time timefora = listTime
-                .values()
-                .stream()
-                .filter(t ->
-                        t.getId().equals(timeDeFora)).findAny().orElse(null);
-        if (timefora == null) {
-            throw new TimeNaoEncontradoException();
-        }
-
-        return (timeCasa
-                .getCorUniformePrincipal()
-                .equals(timefora
-                        .getCorUniformePrincipal())) ? timefora
-                .getCorUniformeSecundario() : timefora.getCorUniformePrincipal();
-    }
+    return (timeCasa
+        .getCorUniformePrincipal()
+        .equals(timefora
+            .getCorUniformePrincipal())) ? timefora
+        .getCorUniformeSecundario() : timefora.getCorUniformePrincipal();
+  }
 }

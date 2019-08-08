@@ -5,88 +5,105 @@ import java.util.Objects;
 
 public class Time {
 
-    Long id;
-    String nome;
-    LocalDate dataCriacao;
-    String corUniformePrincipal;
-    String corUniformeSecundario;
-    private Long capitao;
+  Long id;
+  String nome;
+  LocalDate dataCriacao;
+  String corUniformePrincipal;
+  String corUniformeSecundario;
+  private Long capitao;
 
-    public Long getId() {
-        return id;
-    }
+  public Time() {
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Time(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,
+      String corUniformeSecundario) {
+    this.id = id;
+    this.nome = nome;
+    this.dataCriacao = dataCriacao;
+    this.corUniformePrincipal = corUniformePrincipal;
+    this.corUniformeSecundario = corUniformeSecundario;
+  }
 
-    public String getNome() {
-        return nome;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
+  public String getNome() {
+    return nome;
+  }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
 
-    public String getCorUniformePrincipal() {
-        return corUniformePrincipal;
-    }
+  public LocalDate getDataCriacao() {
+    return dataCriacao;
+  }
 
-    public void setCorUniformePrincipal(String corUniformePrincipal) {
-        this.corUniformePrincipal = corUniformePrincipal;
-    }
+  public void setDataCriacao(LocalDate dataCriacao) {
+    this.dataCriacao = dataCriacao;
+  }
 
-    public String getCorUniformeSecundario() {
-        return corUniformeSecundario;
-    }
+  public String getCorUniformePrincipal() {
+    return corUniformePrincipal;
+  }
 
-    public void setCorUniformeSecundario(String corUniformeSecundario) {
-        this.corUniformeSecundario = corUniformeSecundario;
-    }
+  public void setCorUniformePrincipal(String corUniformePrincipal) {
+    this.corUniformePrincipal = corUniformePrincipal;
+  }
 
-    public Long getCapitao() {
-        return capitao;
-    }
+  public String getCorUniformeSecundario() {
+    return corUniformeSecundario;
+  }
 
-    public void setCapitao(Long capitao) {
-        this.capitao = capitao;
-    }
+  public void setCorUniformeSecundario(String corUniformeSecundario) {
+    this.corUniformeSecundario = corUniformeSecundario;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Time time = (Time) o;
-        return Objects.equals(id, time.id) &&
-                Objects.equals(nome, time.nome) &&
-                Objects.equals(dataCriacao, time.dataCriacao) &&
-                Objects.equals(corUniformePrincipal, time.corUniformePrincipal) &&
-                Objects.equals(corUniformeSecundario, time.corUniformeSecundario) &&
-                Objects.equals(capitao, time.capitao);
-    }
+  public Long getCapitao() {
+    return capitao;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario, capitao);
-    }
+  public void setCapitao(Long capitao) {
+    this.capitao = capitao;
+  }
 
-    @Override
-    public String toString() {
-        return "Time{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", corUniformePrincipal='" + corUniformePrincipal + '\'' +
-                ", corUniformeSecundario='" + corUniformeSecundario + '\'' +
-                ", capitao=" + capitao +
-                '}';
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Time time = (Time) o;
+    return Objects.equals(id, time.id) &&
+        Objects.equals(nome, time.nome) &&
+        Objects.equals(dataCriacao, time.dataCriacao) &&
+        Objects.equals(corUniformePrincipal, time.corUniformePrincipal) &&
+        Objects.equals(corUniformeSecundario, time.corUniformeSecundario) &&
+        Objects.equals(capitao, time.capitao);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects
+        .hash(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario, capitao);
+  }
+
+  @Override
+  public String toString() {
+    return "Time{" +
+        "id=" + id +
+        ", nome='" + nome + '\'' +
+        ", dataCriacao=" + dataCriacao +
+        ", corUniformePrincipal='" + corUniformePrincipal + '\'' +
+        ", corUniformeSecundario='" + corUniformeSecundario + '\'' +
+        ", capitao=" + capitao +
+        '}';
+  }
 }
