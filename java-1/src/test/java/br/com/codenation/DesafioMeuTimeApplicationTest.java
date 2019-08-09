@@ -1,10 +1,13 @@
 package br.com.codenation;
 
+import br.com.codenation.desafio.exceptions.CapitaoNaoInformadoException;
 import br.com.codenation.desafio.exceptions.IdentificadorUtilizadoException;
+import br.com.codenation.desafio.exceptions.JogadorNaoEncontradoException;
 import br.com.codenation.desafio.exceptions.TimeNaoEncontradoException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,7 +54,6 @@ public class DesafioMeuTimeApplicationTest {
     testeBus.listJogadores.put(jogador3.getId(), jogador3);
   }
 
-
   @Test
   public void incluirTimeTeste() {
     testeBus.incluirTime(3L, "Time 3", LocalDate.of(1979, 02, 01), "Azul", "Preto");
@@ -66,6 +68,79 @@ public class DesafioMeuTimeApplicationTest {
   public void incluirJogadorTest() {
     testeBus.incluirJogador(4L, 1L, "Jogador", LocalDate.of(1999, 03, 25), 133,
         BigDecimal.valueOf(1000000));
+    Assert.assertNotNull(testeBus.listJogadores.get(4L));
+  }
+
+  @Test(expected = TimeNaoEncontradoException.class)
+  public void incluirJogadorTimeInexistenteErro() {
+    testeBus.incluirJogador(5L, 999L, "Jogador", LocalDate.of(1999, 03, 25), 133,
+        BigDecimal.valueOf(1000000));
+  }
+
+  @Test(expected = IdentificadorUtilizadoException.class)
+  public void incluirJogadorJaInclusoErro() {
+    testeBus.incluirJogador(1L, 1L, "Jogador", LocalDate.of(1999, 03, 25), 133,
+        BigDecimal.valueOf(1000000));
+  }
+
+  @Test
+  public void definirCapitao() {
+    testeBus.definirCapitao(1L);
+    final Jogador jogador = testeBus.listJogadores.get(1L);
+    final Long idJogador = testeBus.buscarCapitaoDoTime(jogador.idTime);
+
+    Assert.assertEquals(1l, idJogador.longValue());
+  }
+
+  @Test(expected = JogadorNaoEncontradoException.class)
+  public void definirCapitaoJogadorNaoExistente() {
+    testeBus.definirCapitao(999L);
+  }
+
+  @Test
+  public void buscarCapitaoDoTime() {
+    testeBus.definirCapitao(1L);
+    Assert.assertEquals(1l, testeBus.buscarCapitaoDoTime(1L).longValue());
+  }
+
+  @Test(expected = TimeNaoEncontradoException.class)
+  public void buscarCapitaoDoTimeNaoEncontrado() {
+    testeBus.buscarCapitaoDoTime(999L);
+  }
+
+  @Test(expected = CapitaoNaoInformadoException.class)
+  public void buscarCapitaoDoTimeNaoDefinido() {
+    testeBus.buscarCapitaoDoTime(1L);
+  }
+
+  @Test
+  public void buscarNomeJogadorDoTime() {
+    Assert.assertEquals("Cristiano Ronaldo", testeBus.buscarNomeJogador(1L));
+  }
+
+  @Test(expected = JogadorNaoEncontradoException.class)
+  public void buscarNomeJogadorDoTimeNaoEncontrado() {
+    testeBus.buscarNomeJogador(999L);
+  }
+
+  @Test
+  public void buscarNomeTime() {
+    Assert.assertEquals("Time 1", testeBus.buscarNomeTime(1L));
+  }
+
+  @Test(expected = TimeNaoEncontradoException.class)
+  public void buscarNomeTimeNaoEncontrado() {
+    testeBus.buscarNomeTime(999L);
+  }
+
+  @Test
+  public void buscarJogadoresTime() {
+    Assert.assertEquals(Arrays.asList(1L, 2L, 3L), testeBus.buscarJogadoresDoTime(1L));
+  }
+
+  @Test(expected = TimeNaoEncontradoException.class)
+  public void buscarJogadoresTimeNaoEncontrado() {
+    testeBus.buscarJogadoresDoTime(999L);
   }
 
   @Test
@@ -77,7 +152,6 @@ public class DesafioMeuTimeApplicationTest {
   public void buscarMelhorJogadorDoTimeErro() {
     Assert.assertEquals(3l, testeBus.buscarMelhorJogadorDoTime(5L).longValue());
   }
-
 
   @Test
   public void buscarJogadorMaisVelho() {
@@ -91,21 +165,10 @@ public class DesafioMeuTimeApplicationTest {
 
   @Test
   public void buscarTimes() {
-    List a = new ArrayList();
-    a.add(0, 1L);
-    a.add(1, 2L);
+    List<Long> a = new ArrayList<>();
+    a.add(1L);
+    a.add(2L);
     Assert.assertEquals(a, testeBus.buscarTimes());
-  }
-
-  @Test
-  public void definirCapitao() {
-    testeBus.definirCapitao(1L);
-  }
-
-  @Test
-  public void buscarCapitaoDoTime() {
-    testeBus.definirCapitao(1L);
-    Assert.assertEquals(1l, testeBus.buscarCapitaoDoTime(1L).longValue());
   }
 
   @Test
@@ -119,15 +182,43 @@ public class DesafioMeuTimeApplicationTest {
   }
 
   @Test
+  public void buscarSalarioJogador() {
+    Assert.assertEquals(1000000, testeBus.buscarSalarioDoJogador(1L).longValue());
+  }
+
+  @Test(expected = JogadorNaoEncontradoException.class)
+  public void buscarSalarioJogadorNaoEncontrado() {
+    testeBus.buscarSalarioDoJogador(999L);
+  }
+
+  @Test
   public void buscarTopJogadores() {
-    List a = new ArrayList();
-    a.add(0, 3);
-    a.add(1, 1);
+    List<Long> a = new ArrayList<>();
+    a.add(3L);
+    a.add(1L);
     Assert.assertEquals(a, testeBus.buscarTopJogadores(2));
   }
 
   @Test
-  public void buscarCorCamisaTimeDeFora() {
+  public void buscarCorCamisaTime1DeFora() {
+    Assert.assertEquals("Azul", testeBus.buscarCorCamisaTimeDeFora(2L, 1L));
+  }
+
+  @Test
+  public void buscarCorCamisaTime1DeForaIgual() {
+    testeBus.listTime.get(2L).setCorUniformePrincipal("Azul");
+    Assert.assertEquals("Laranja", testeBus.buscarCorCamisaTimeDeFora(2L, 1L));
+  }
+
+  @Test
+  public void buscarCorCamisaTime2DeFora() {
     Assert.assertEquals("Amarelo", testeBus.buscarCorCamisaTimeDeFora(1L, 2L));
   }
+
+  @Test
+  public void buscarCorCamisaTime2DeForaIgual() {
+    testeBus.listTime.get(1L).setCorUniformePrincipal("Amarelo");
+    Assert.assertEquals("Branco", testeBus.buscarCorCamisaTimeDeFora(1L, 2L));
+  }
+
 }
