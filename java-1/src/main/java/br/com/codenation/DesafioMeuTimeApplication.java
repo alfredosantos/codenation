@@ -9,12 +9,9 @@ import br.com.codenation.desafio.exceptions.TimeNaoEncontradoException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -28,17 +25,15 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
       String corUniformeSecundario) {
     Time time = new Time();
 
-    if (id == null) {
-      throw new NoSuchElementException("No value present");
-    } else if (listTime.containsKey(id)) {
+    if (listTime.containsKey(id)) {
       throw new IdentificadorUtilizadoException();
     }
 
     time.setId(id);
     time.setNome(nome);
     time.setDataCriacao(dataCriacao);
-    time.setCorUniformeSecundario(corUniformePrincipal);
-    time.setCorUniformePrincipal(corUniformeSecundario);
+    time.setCorUniformePrincipal(corUniformePrincipal);
+    time.setCorUniformeSecundario(corUniformeSecundario);
 
     listTime.put(id, time);
   }
@@ -60,7 +55,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
         .findAny().orElseThrow(TimeNaoEncontradoException::new);
 
     jogador.setId(id);
-    jogador.setId(idTime);
+    jogador.setIdTime(idTime);
     jogador.setNome(nome);
     jogador.setDataNascimento(dataNascimento);
     jogador.setNivelHabilidade(nivelHabilidade);
@@ -135,8 +130,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
         .filter(t -> t.getId().equals(idTime))
         .findAny().orElseThrow(TimeNaoEncontradoException::new);
     Comparator<Jogador> jogadorComparator =
-        Comparator.comparingLong(Jogador::getId)
-            .thenComparingLong(Jogador::getId);
+        Comparator.comparingLong(Jogador::getId);
     return listJogadores.values().stream()
         .filter(j -> j.getIdTime().equals(idTime)).sorted(jogadorComparator)
         .map(Jogador::getId)
@@ -157,7 +151,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
         .stream()
         .filter(j -> j.getIdTime()
             .equals(idTime)).sorted(Comparator.comparing(Jogador::getNivelHabilidade)
-            .reversed().thenComparing(Jogador::getId)).collect(Collectors.toList());
+            .reversed().thenComparingLong(Jogador::getId)).collect(Collectors.toList());
 
     return jogadorList.get(0).getId();
   }
@@ -171,17 +165,12 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             .equals(idTime))
         .findAny().orElseThrow(TimeNaoEncontradoException::new);
 
-    final List<Jogador> jogadores = listJogadores
+    List<Jogador> jogadores = listJogadores
         .values()
         .stream()
         .filter(j -> j.getIdTime()
-            .equals(idTime))
-        .collect(Collectors.toList());
-
-    Comparator<? super Jogador> comparator =
-        (Comparator<Jogador>) (jogador, t1)
-            -> t1.getDataNascimento().compareTo(jogador.getDataNascimento());
-    Collections.sort(jogadores, comparator.reversed());
+            .equals(idTime)).sorted(Comparator.comparing(Jogador::getDataNascimento)
+            .thenComparingLong(Jogador::getId)).collect(Collectors.toList());
     return jogadores.get(0).getId();
   }
 
@@ -206,8 +195,9 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             .equals(idTime))
         .collect(Collectors.toList());
 
-    Comparator<? super Jogador> comparator = Comparator.comparing(Jogador::getSalario);
-    jogadores.sort(comparator.reversed());
+    Comparator<? super Jogador> comparator = Comparator.comparing(Jogador::getSalario).reversed()
+        .thenComparingLong(Jogador::getId);
+    jogadores.sort(comparator);
     return jogadores.get(0).getId();
   }
 

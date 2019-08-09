@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
@@ -197,6 +198,11 @@ public class DesafioMeuTimeApplicationTest {
     a.add(3L);
     a.add(1L);
     Assert.assertEquals(a, testeBus.buscarTopJogadores(2));
+  }
+
+  @Test
+  public void buscarTopJogadoresVazio(){
+    Assert.assertEquals(Collections.emptyList(), new DesafioMeuTimeApplication().buscarTopJogadores(2));
   }
 
   @Test
