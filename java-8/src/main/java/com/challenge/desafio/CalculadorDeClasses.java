@@ -11,21 +11,21 @@ public class CalculadorDeClasses implements Calculavel {
 
   @Override
   public BigDecimal somar(Object classeCalcular) {
-    return getExecutarOperacao(classeCalcular, Somar.class, TipoOperacao.SOMAR);
+    return getExecutarOperacao(classeCalcular, Somar.class);
   }
 
   @Override
   public BigDecimal subtrair(Object classeCalcular) {
-    return getExecutarOperacao(classeCalcular, Subtrair.class, TipoOperacao.SUBTRAIR);
+    return getExecutarOperacao(classeCalcular, Subtrair.class);
   }
 
   @Override
   public BigDecimal totalizar(Object classeCalcular) {
-    return somar(classeCalcular).add(subtrair(classeCalcular));
+    return somar(classeCalcular).subtract(subtrair(classeCalcular));
   }
 
   private BigDecimal getExecutarOperacao(Object classeCalcular,
-      Class<? extends Annotation> annotationClass, TipoOperacao tipoOperacao) {
+      Class<? extends Annotation> annotationClass) {
     if (classeCalcular == null) {
       return BigDecimal.ZERO;
     }
@@ -39,19 +39,12 @@ public class CalculadorDeClasses implements Calculavel {
           final BigDecimal augend =
               field.get(classeCalcular) != null ? (BigDecimal) field.get(classeCalcular)
                   : BigDecimal.ZERO;
-          operador = tipoOperacao.equals(TipoOperacao.SOMAR) ?
-              operador.add(augend) :
-              operador.subtract(augend);
+          operador = operador.add(augend);
         } catch (IllegalAccessException e) {
           e.printStackTrace();
         }
       }
     }
     return operador;
-  }
-
-  private enum TipoOperacao {
-    SOMAR,
-    SUBTRAIR
   }
 }

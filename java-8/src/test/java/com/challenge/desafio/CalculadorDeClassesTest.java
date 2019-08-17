@@ -67,7 +67,7 @@ public class CalculadorDeClassesTest {
     classeCalcular.setSubtrair3(BigDecimal.valueOf(2));
     classeCalcular.setSubtrair4(BigDecimal.valueOf(10));
     classeCalcular.setSubtrair5(BigDecimal.valueOf(7));
-    Assert.assertEquals(BigDecimal.valueOf(-26), calculadorDeClasses.subtrair(classeCalcular));
+    Assert.assertEquals(BigDecimal.valueOf(26), calculadorDeClasses.subtrair(classeCalcular));
   }
 
   @Test
