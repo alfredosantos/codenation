@@ -21,17 +21,13 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 @Data
-@Getter
-@Setter
 @Entity
-@EntityListeners(Challenge.class)
-@Table(name = "acceleration")
 @Embeddable
+@Table(name = "acceleration")
+@EntityListeners(Challenge.class)
 public class Acceleration {
 
   @Id
@@ -50,7 +46,7 @@ public class Acceleration {
 
   @EmbeddedId
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "challenge_id")
+  @JoinColumn(name = "challenge_id", referencedColumnName = "id")
   private Challenge challenge;
 
   @CreatedDate
@@ -60,7 +56,4 @@ public class Acceleration {
 
   @OneToMany(mappedBy = "acceleration", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Candidate> candidates;
-
-  public Acceleration() {
-  }
 }

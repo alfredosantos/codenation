@@ -10,26 +10,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 @Data
-@Getter
-@Setter
+@Table
 @Entity(name = "candidate")
 @EntityListeners({User.class, Company.class, Acceleration.class})
-@Table
 public class Candidate {
 
   @EmbeddedId
-  private User user;
-
-  @EmbeddedId
-  private Acceleration acceleration;
-
-  @EmbeddedId
-  private Company company;
+  private CandidateIdentity candidateIdentity;
 
   @NotNull
   @Column(name = "status", nullable = true)
@@ -40,6 +30,4 @@ public class Candidate {
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdAt;
 
-  public Candidate() {
-  }
 }

@@ -1,5 +1,6 @@
 package com.challenge.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -10,23 +11,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 @Data
-@Getter
-@Setter
-@EntityListeners({User.class, Challenge.class})
-@Entity(name = "submission")
 @Table
-public class Submission {
+@Entity(name = "submission")
+@EntityListeners({User.class, Challenge.class})
+public class Submission implements Serializable {
 
   @EmbeddedId
-  private User user;
-
-  @EmbeddedId
-  private Challenge challenge;
+  private SubmissionIdentity submissionIdentity;
 
   @NotNull
   @Column(name = "score", nullable = false)
@@ -36,7 +30,4 @@ public class Submission {
   @Column(name = "created_at", nullable = true)
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdAt;
-
-  public Submission() {
-  }
 }

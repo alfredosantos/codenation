@@ -16,17 +16,14 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 @Data
-@Getter
-@Setter
 @Entity
-@EntityListeners(Candidate.class)
 @Embeddable
+@EntityListeners(Candidate.class)
 public class Company {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -48,7 +45,4 @@ public class Company {
 
   @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Candidate> candidates;
-
-  public Company() {
-  }
 }
