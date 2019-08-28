@@ -6,7 +6,9 @@ import com.challenge.repository.CandidateRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CandidateServiceInterfaceImpl implements CandidateServiceInterface {
 
   @Autowired
@@ -14,26 +16,30 @@ public class CandidateServiceInterfaceImpl implements CandidateServiceInterface 
 
   @Override
   public Optional<Candidate> findById(CandidateId id) {
-    return Optional.empty();
+
+    return candidateRepository.findById(id);
   }
 
   @Override
   public Optional<Candidate> findById(Long userId, Long companyId, Long accelerationId) {
-    return Optional.empty();
+    return candidateRepository.findById(userId, companyId, accelerationId);
   }
 
   @Override
   public List<Candidate> findByCompanyId(Long companyId) {
-    return null;
+
+    return candidateRepository.findByCompanyId(companyId);
   }
 
   @Override
   public List<Candidate> findByAccelerationId(Long accelerationId) {
-    return null;
+
+    return candidateRepository.findByAccelerationId(accelerationId);
   }
 
   @Override
   public Candidate save(Candidate object) {
-    return null;
+
+    return (Candidate) candidateRepository.save(object);
   }
 }

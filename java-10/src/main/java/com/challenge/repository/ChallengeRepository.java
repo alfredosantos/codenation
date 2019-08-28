@@ -4,7 +4,7 @@ import com.challenge.entity.Challenge;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ChallengeRepository extends CrudRepository {
+public interface ChallengeRepository extends CrudRepository<Challenge, Long> {
 
   Optional<Challenge> findById(Long id);
 

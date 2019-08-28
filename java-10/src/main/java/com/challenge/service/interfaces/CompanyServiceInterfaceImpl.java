@@ -3,7 +3,9 @@ package com.challenge.service.interfaces;
 import com.challenge.entity.Company;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CompanyServiceInterfaceImpl implements CompanyServiceInterface {
 
   @Override

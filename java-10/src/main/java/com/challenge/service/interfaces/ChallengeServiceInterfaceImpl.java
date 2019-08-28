@@ -4,7 +4,9 @@ import com.challenge.entity.Challenge;
 import com.challenge.repository.ChallengeRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ChallengeServiceInterfaceImpl implements ChallengeServiceInterface {
 
   @Autowired

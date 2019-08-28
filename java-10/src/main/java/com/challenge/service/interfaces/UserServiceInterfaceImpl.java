@@ -1,28 +1,39 @@
 package com.challenge.service.interfaces;
 
 import com.challenge.entity.User;
+import com.challenge.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceInterfaceImpl implements UserServiceInterface {
+
+  @Autowired
+  private UserRepository userRepository;
 
   @Override
   public Optional<User> findById(Long userId) {
-    return Optional.empty();
+
+    return userRepository.findById(userId);
   }
 
   @Override
   public List<User> findByAccelerationName(String name) {
-    return null;
+
+    return userRepository.findByAccelerationName(name);
   }
 
   @Override
   public List<User> findByCompanyId(Long companyId) {
-    return null;
+
+    return userRepository.findByCompanyId(companyId);
   }
 
   @Override
   public User save(User object) {
-    return null;
+
+    return userRepository.save(object);
   }
 }
