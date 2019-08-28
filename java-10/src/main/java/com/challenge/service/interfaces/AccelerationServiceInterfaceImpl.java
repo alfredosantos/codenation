@@ -19,6 +19,11 @@ public class AccelerationServiceInterfaceImpl implements AccelerationServiceInte
   }
 
   @Override
+  public Optional<Acceleration> findByName(String name) {
+    return accelerationRepository.findByName(name);
+  }
+
+  @Override
   public List<Acceleration> findByCompanyId(Long companyId) {
     return accelerationRepository.findByCompanyId(companyId);
   }

@@ -16,7 +16,6 @@ public class CandidateServiceInterfaceImpl implements CandidateServiceInterface 
 
   @Override
   public Optional<Candidate> findById(CandidateId id) {
-
     return candidateRepository.findById(id);
   }
 

@@ -15,25 +15,21 @@ public class UserServiceInterfaceImpl implements UserServiceInterface {
 
   @Override
   public Optional<User> findById(Long userId) {
-
     return userRepository.findById(userId);
   }
 
   @Override
   public List<User> findByAccelerationName(String name) {
-
     return userRepository.findByAccelerationName(name);
   }
 
   @Override
   public List<User> findByCompanyId(Long companyId) {
-
     return userRepository.findByCompanyId(companyId);
   }
 
   @Override
   public User save(User object) {
-
     return userRepository.save(object);
   }
 }

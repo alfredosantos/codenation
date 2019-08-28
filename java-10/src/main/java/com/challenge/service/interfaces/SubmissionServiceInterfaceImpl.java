@@ -13,8 +13,11 @@ public class SubmissionServiceInterfaceImpl implements SubmissionServiceInterfac
 
   @Override
   public BigDecimal findHigherScoreByChallengeId(Long challengeId) {
-
-    return submissionRepository.findHigherScoreByChallengeId(challengeId);
+    BigDecimal res = submissionRepository.findHigherScoreByChallengeId(challengeId);
+    if (res != null) {
+      return res;
+    }
+    return BigDecimal.ZERO;
   }
 
   @Override
@@ -25,7 +28,6 @@ public class SubmissionServiceInterfaceImpl implements SubmissionServiceInterfac
 
   @Override
   public Submission save(Submission object) {
-
     return submissionRepository.save(object);
   }
 }
