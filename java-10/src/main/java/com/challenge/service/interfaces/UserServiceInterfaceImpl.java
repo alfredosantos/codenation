@@ -2,6 +2,7 @@ package com.challenge.service.interfaces;
 
 import com.challenge.entity.User;
 import com.challenge.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class UserServiceInterfaceImpl implements UserServiceInterface {
 
   @Override
   public User save(User object) {
-    return userRepository.save(object);
+    object.setCreatedAt(LocalDateTime.now());
+    return this.userRepository.save(object);
   }
 }

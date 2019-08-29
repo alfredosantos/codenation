@@ -5,7 +5,9 @@ import com.challenge.repository.SubmissionRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SubmissionServiceInterfaceImpl implements SubmissionServiceInterface {
 
   @Autowired
@@ -23,7 +25,8 @@ public class SubmissionServiceInterfaceImpl implements SubmissionServiceInterfac
   @Override
   public List<Submission> findByChallengeIdAndAccelerationId(Long challengeId,
       Long accelerationId) {
-    return (List<Submission>) submissionRepository.findHigherScoreByChallengeId(challengeId);
+    return this.submissionRepository
+        .findByChallengeIdAndAccelerationId(challengeId, accelerationId);
   }
 
   @Override

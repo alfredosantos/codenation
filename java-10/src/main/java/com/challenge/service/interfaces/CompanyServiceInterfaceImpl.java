@@ -15,25 +15,21 @@ public class CompanyServiceInterfaceImpl implements CompanyServiceInterface {
 
   @Override
   public Optional<Company> findById(Long id) {
-
-    return Optional.empty();
+    return companyRepository.findById(id);
   }
 
   @Override
   public List<Company> findByAccelerationId(Long accelerationId) {
-
-    return null;
+    return companyRepository.findByAccelerationId(accelerationId);
   }
 
   @Override
   public List<Company> findByUserId(Long userId) {
-
-    return null;
+    return companyRepository.findByUserId(userId);
   }
 
   @Override
   public Company save(Company object) {
-
-    return null;
+    return companyRepository.save(object);
   }
 }

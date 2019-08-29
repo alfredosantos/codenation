@@ -26,19 +26,16 @@ public class CandidateServiceInterfaceImpl implements CandidateServiceInterface 
 
   @Override
   public List<Candidate> findByCompanyId(Long companyId) {
-
     return candidateRepository.findByCompanyId(companyId);
   }
 
   @Override
   public List<Candidate> findByAccelerationId(Long accelerationId) {
-
     return candidateRepository.findByAccelerationId(accelerationId);
   }
 
   @Override
   public Candidate save(Candidate object) {
-
-    return (Candidate) candidateRepository.save(object);
+    return candidateRepository.save(object);
   }
 }

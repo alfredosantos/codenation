@@ -14,11 +14,11 @@ public class ChallengeServiceInterfaceImpl implements ChallengeServiceInterface 
 
   @Override
   public List<Challenge> findByAccelerationIdAndUserId(Long accelerationId, Long userId) {
-    return null;
+    return challengeRepository.findByAccelerationIdAndUserId(accelerationId, userId);
   }
 
   @Override
   public Challenge save(Challenge object) {
-    return null;
+    return challengeRepository.save(object);
   }
 }
