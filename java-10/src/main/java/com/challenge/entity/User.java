@@ -62,6 +62,7 @@ public class User {
   @OneToMany(mappedBy = "id.user")
   private List<Submission> submissions;
 
-  public void setCreatedAt(LocalDateTime now) {
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 }

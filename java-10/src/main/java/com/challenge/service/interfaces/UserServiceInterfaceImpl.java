@@ -32,6 +32,6 @@ public class UserServiceInterfaceImpl implements UserServiceInterface {
   @Override
   public User save(User object) {
     object.setCreatedAt(LocalDateTime.now());
-    return this.userRepository.save(object);
+    return userRepository.save(object);
   }
 }
