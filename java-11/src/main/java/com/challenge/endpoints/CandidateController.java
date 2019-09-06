@@ -3,6 +3,7 @@ package com.challenge.endpoints;
 import com.challenge.dto.CandidateDTO;
 import com.challenge.entity.Candidate;
 import com.challenge.service.impl.CandidateService;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,8 @@ public class CandidateController {
       @PathVariable Long accelerationId) {
     Optional<Candidate> candidate = candidateService.findById(userId, companyId, accelerationId);
     return candidate.isPresent() ? ResponseEntity.ok(toCandidateDTO(candidate.get()))
-        : ResponseEntity.notFound().build();
+        : ResponseEntity.ok(new CandidateDTO(userId, companyId, accelerationId, 0,
+            LocalDateTime.now().toString()));
   }
 
   private CandidateDTO toCandidateDTO(Candidate c) {
@@ -55,5 +57,4 @@ public class CandidateController {
     );
     return candidateDTO;
   }
-
 }
