@@ -3,6 +3,7 @@ package com.challenge.endpoints;
 import com.challenge.dto.CandidateDTO;
 import com.challenge.entity.Candidate;
 import com.challenge.service.impl.CandidateService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,7 +24,21 @@ public class CandidateController {
   @Autowired
   CandidateService candidateService;
 
-  @GetMapping("/user/{userId}/company/{companyId}/acceleration/{accelerationId}")
+  @GetMapping
+  public List<CandidateDTO> findAll(@RequestParam(required = false) Long companyId,
+      @RequestParam(required = false) Long accelerationId) {
+    if (companyId != null) {
+      return candidateService.findByCompanyId(companyId).stream().map(c -> toCandidateDTO(c))
+          .collect(Collectors.toList());
+    } else if (accelerationId != null) {
+      return candidateService.findByAccelerationId(accelerationId).stream()
+          .map(c -> toCandidateDTO(c)).collect(Collectors.toList());
+    } else {
+      return new ArrayList<>();
+    }
+  }
+
+  @GetMapping("/{userId}/{companyId}/{accelerationId}")
   public ResponseEntity<CandidateDTO> findById(@PathVariable Long userId,
       @PathVariable Long companyId,
       @PathVariable Long accelerationId) {
@@ -31,27 +47,13 @@ public class CandidateController {
         : ResponseEntity.notFound().build();
   }
 
-  @GetMapping("/company/{id}")
-  public List<CandidateDTO> findAllByCompanyId(@PathVariable Long id) {
-    List<Candidate> candidates = candidateService.findByCompanyId(id);
-    return this.toCandidatesDTO(candidates);
-  }
-
-  @GetMapping("/acceleration/{id}")
-  public List<CandidateDTO> findAllByAccelerationId(@PathVariable Long id) {
-    List<Candidate> candidates = candidateService.findByAccelerationId(id);
-    return this.toCandidatesDTO(candidates);
-  }
-
   private CandidateDTO toCandidateDTO(Candidate c) {
     String createdAt = c.getCreatedAt() != null ? c.getCreatedAt().toString() : null;
-    return new CandidateDTO(
+    final CandidateDTO candidateDTO = new CandidateDTO(
         c.getId().getUser().getId(), c.getId().getAcceleration().getId(),
         c.getId().getCompany().getId(), c.getStatus(), createdAt
     );
+    return candidateDTO;
   }
 
-  private List<CandidateDTO> toCandidatesDTO(List<Candidate> candidates) {
-    return candidates.stream().map(c -> toCandidateDTO(c)).collect(Collectors.toList());
-  }
 }
