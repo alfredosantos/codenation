@@ -5,7 +5,7 @@ import com.challenge.entity.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserServiceInterface extends ServiceInterface<User> {
+public interface    UserServiceInterface extends ServiceInterface<User> {
 
     Optional<User> findById(Long userId);
 
